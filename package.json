@@ -1,0 +1,49 @@
+{
+  "name": "image-generate",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cd ./demo/front && vite --config vite.config.ts"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,tsx,ts,less,md,json}": [
+      "pretty-quick — staged"
+    ],
+    "*.ts": [
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-typescript": "^8.2.5",
+    "@types/koa": "^2.13.4",
+    "@types/koa-router": "^7.4.4",
+    "@typescript-eslint/eslint-plugin": "^4.18.0",
+    "@typescript-eslint/parser": "^4.18.0",
+    "@vitejs/plugin-vue": "^1.10.1",
+    "@vitejs/plugin-vue-jsx": "^1.3.0",
+    "canvas": "^2.8.0",
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "husky": "^7.0.2",
+    "koa": "^2.13.4",
+    "koa-router": "^10.1.1",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.4.0",
+    "rollup": "^2.56.3",
+    "rollup-plugin-filesize": "^9.1.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.4.3",
+    "vite": "^2.6.14",
+    "vue": "3"
+  }
+}
