@@ -17,6 +17,7 @@
     "experimentalDecorators": true,
     "pretty": true,
     "target": "es5",
+    "outDir": "dist",
     "lib": [
       "dom",
       "es2015"

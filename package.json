@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "cd ./demo/front && vite --config vite.config.ts"
+    "dev": "cd ./demo/front && vite --config vite.config.ts",
+    "service": "cd ./demo/service && nodemon index.ts src/"
   },
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
@@ -36,8 +37,10 @@
     "eslint-plugin-promise": "^5.1.0",
     "husky": "^7.0.2",
     "koa": "^2.13.4",
+    "koa-body": "^4.2.0",
     "koa-router": "^10.1.1",
     "lint-staged": "^11.1.2",
+    "nodemon": "^2.0.15",
     "prettier": "^2.4.0",
     "rollup": "^2.56.3",
     "rollup-plugin-filesize": "^9.1.1",

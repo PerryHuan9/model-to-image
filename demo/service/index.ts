@@ -1,16 +1,24 @@
-import { render } from '../../src';
 import Koa from 'koa';
 import KoaRouter from 'koa-router';
+import KoaBody from 'koa-body';
 import { createCanvas } from 'canvas';
+import { render } from '../../src';
 
 const app = new Koa();
 
 const router = new KoaRouter();
 
-router.post('/generage', () => {
+router.post('/generate', async (ctx, next) => {
+  ctx.response.set('Access-Control-Allow-Origin', '*');
+  const { body } = ctx.request;
+  const model = JSON.parse(body.content);
+  const canvas = createCanvas(0, 0);
+  const url = await render(canvas, model);
+  ctx.body = url;
+});
 
-})
-
-
-app.use(router.routes()).use(router.allowedMethods())
-app.listen(9000);
+app.use(KoaBody({ multipart: true }));
+app.use(router.routes()).use(router.allowedMethods());
+app.listen(9000, () => {
+  console.log('http://localhost:9000');
+});

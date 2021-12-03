@@ -2,24 +2,9 @@ import { Canvas } from 'canvas';
 
 export type RenderCancas = HTMLCanvasElement | Canvas;
 
-// export interface Background {
-//   image?: string;
-//   color?: string;
-// }
-
-// interface BorderLine {
-//   color: string;
-//   width: number;
-// }
-
-// export interface Border {
-//   left?: BorderLine;
-//   right?: BorderLine;
-//   top?: BorderLine;
-//   bottom?: BorderLine;
-// }
-
+type ElementType = 'image' | 'rect' | 'text';
 interface BaseElement {
+  type: ElementType;
   left: number;
   top: number;
 }
@@ -29,6 +14,7 @@ export interface ImageElement extends BaseElement {
   width?: number;
   height?: number;
   url: string;
+  rotate?: number;
 }
 
 export interface RectElement extends BaseElement {
@@ -36,9 +22,23 @@ export interface RectElement extends BaseElement {
   width: number;
   height: number;
   color: string;
+  rotate?: number;
 }
 
-export type Element = ImageElement | RectElement;
+export interface TextElement extends BaseElement {
+  type: 'text';
+  width: number;
+  height?: number;
+  color: string;
+  text: string;
+  font: string;
+  rotate?: number;
+  lineHeight: number;
+  // 是否镂空
+  stroke?: boolean;
+}
+
+export type Element = ImageElement | RectElement | TextElement;
 
 export interface Layout {
   width: number;

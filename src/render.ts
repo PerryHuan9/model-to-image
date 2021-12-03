@@ -5,8 +5,9 @@ import {
   RectElement,
   RenderOptions,
   Element,
+  TextElement,
 } from './type';
-import { createImage } from './utils';
+import { loadImage } from './utils';
 
 const DEFAULT_OPTIONS: RenderOptions = {
   mimeType: 'image/png',
@@ -46,11 +47,25 @@ async function renderElement(
 ) {
   switch (ele.type) {
     case 'image':
-      return renderImage(context, ele);
+      await renderImage(context, ele);
+      break;
     case 'rect':
-      return renderRect(context, ele);
+      await renderRect(context, ele);
+      break;
+    case 'text':
+      await renderText(context, ele);
+      break;
     default:
-      return Promise.resolve();
+  }
+  resetContext(context, ele);
+}
+
+async function resetContext(
+  context: NodeCanvasRenderingContext2D,
+  ele: Element,
+) {
+  if (ele.rotate) {
+    context.rotate(-ele.rotate);
   }
 }
 
@@ -58,7 +73,7 @@ async function renderImage(
   context: NodeCanvasRenderingContext2D,
   ele: ImageElement,
 ) {
-  const image = await createImage(ele.url);
+  const image = await loadImage(ele.url);
   let imageWidth = ele.width;
   let imageHeight = ele.height;
   if (!imageWidth) {
@@ -72,6 +87,9 @@ async function renderImage(
       ? (ele.width / image.width) * image.height
       : image.height;
   }
+  if (ele.rotate) {
+    context.rotate(ele.rotate);
+  }
   context.drawImage(image, ele.left, ele.top, imageWidth, imageHeight);
 }
 
@@ -79,6 +97,60 @@ async function renderRect(
   context: NodeCanvasRenderingContext2D,
   rect: RectElement,
 ) {
+  if (rect.rotate) {
+    context.rotate(rect.rotate);
+  }
   context.fillStyle = rect.color;
   context.fillRect(rect.left, rect.top, rect.width, rect.height);
+}
+
+async function renderText(
+  context: NodeCanvasRenderingContext2D,
+  ele: TextElement,
+) {
+  renderHorizontalText(context, ele);
+}
+
+/**
+ * 绘制多行 横向文字
+ * @param context
+ * @param ele
+ */
+function renderHorizontalText(
+  context: NodeCanvasRenderingContext2D,
+  ele: TextElement,
+) {
+  const { text, left, top, lineHeight, width, font, color, rotate, height } =
+    ele;
+  const x = left;
+  let y = top;
+
+  // 字符分隔为数组
+  const arrText = text.split('');
+  let line = '';
+  if (rotate) {
+    context.rotate(rotate);
+  }
+  const draw = (t: string, x1: number, y1: number) =>
+    ele.stroke ? context.strokeText(t, x1, y1) : context.fillText(t, x1, y1);
+  context.font = font;
+  context[ele.stroke ? 'strokeStyle' : 'fillStyle'] = color;
+  for (let n = 0; n < arrText.length; n++) {
+    const testLine = line + arrText[n];
+    const metrics = context.measureText(testLine);
+    const testWidth = metrics.width;
+    if (height && height < y - top) {
+      break;
+    }
+    if (testWidth > width && n > 0) {
+      draw(line, x, y);
+      line = arrText[n];
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  if (height && height > y - top) {
+    draw(line, x, y);
+  }
 }
