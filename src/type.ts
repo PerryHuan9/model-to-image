@@ -17,12 +17,38 @@ export interface ImageElement extends BaseElement {
   rotate?: number;
 }
 
+type GradientStop = [number, string];
+
+export interface LinearGradient {
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  stops: GradientStop[];
+}
+
+export interface RadialGradient {
+  stops: GradientStop[];
+  startRadius: number;
+  endRadius: number;
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+}
+export interface Pattern {
+  image: string;
+  mode: 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat';
+}
+
+export type Style = string | LinearGradient | RadialGradient | Pattern;
+
 export interface RectElement extends BaseElement {
   type: 'rect';
   width: number;
   height: number;
-  color: string;
   rotate?: number;
+  style: Style;
 }
 
 export interface TextElement extends BaseElement {

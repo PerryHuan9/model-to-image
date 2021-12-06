@@ -1,5 +1,5 @@
-import { Canvas, NodeCanvasRenderingContext2D } from 'canvas';
-import {
+import type { NodeCanvasRenderingContext2D, Canvas } from 'canvas';
+import type {
   ImageElement,
   Layout,
   RectElement,
@@ -7,17 +7,16 @@ import {
   Element,
   TextElement,
 } from './type';
-import { loadImage } from './utils';
+import { loadImage, getStyle, isNodeEnv } from './utils';
 
 const DEFAULT_OPTIONS: RenderOptions = {
   mimeType: 'image/png',
 };
 
-export async function render(
-  canvas: Canvas,
-  model: Layout,
-  op?: RenderOptions,
-) {
+export async function render(model: Layout, op?: RenderOptions) {
+  const canvas: Canvas = isNodeEnv
+    ? (await import('canvas')).createCanvas(0, 0)
+    : (document.createElement('canvas') as any);
   const options = { ...DEFAULT_OPTIONS, ...op };
   const context = canvas.getContext('2d');
   canvas.width = model.width;
@@ -45,6 +44,7 @@ async function renderElement(
   context: NodeCanvasRenderingContext2D,
   ele: Element,
 ) {
+  context.save();
   switch (ele.type) {
     case 'image':
       await renderImage(context, ele);
@@ -57,16 +57,7 @@ async function renderElement(
       break;
     default:
   }
-  resetContext(context, ele);
-}
-
-async function resetContext(
-  context: NodeCanvasRenderingContext2D,
-  ele: Element,
-) {
-  if (ele.rotate) {
-    context.rotate(-ele.rotate);
-  }
+  context.restore();
 }
 
 async function renderImage(
@@ -100,7 +91,11 @@ async function renderRect(
   if (rect.rotate) {
     context.rotate(rect.rotate);
   }
-  context.fillStyle = rect.color;
+
+  if (rect.style) {
+    context.fillStyle = await getStyle(context, rect.style);
+  }
+
   context.fillRect(rect.left, rect.top, rect.width, rect.height);
 }
 

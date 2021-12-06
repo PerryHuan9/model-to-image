@@ -1,8 +1,7 @@
 import Koa from 'koa';
 import KoaRouter from 'koa-router';
 import KoaBody from 'koa-body';
-import { createCanvas } from 'canvas';
-import { render } from '../../src';
+import { modelToImage } from '../../src';
 
 const app = new Koa();
 
@@ -12,8 +11,7 @@ router.post('/generate', async (ctx, next) => {
   ctx.response.set('Access-Control-Allow-Origin', '*');
   const { body } = ctx.request;
   const model = JSON.parse(body.content);
-  const canvas = createCanvas(0, 0);
-  const url = await render(canvas, model);
+  const url = await modelToImage(model);
   ctx.body = url;
 });
 

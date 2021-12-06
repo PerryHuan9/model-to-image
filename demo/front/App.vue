@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { render } from '../../src';
+import { modelToImage } from '../../src';
 import { Layout } from '../../src/type';
 
 const imgUrl = ref('');
@@ -39,22 +39,33 @@ const model: Layout = {
   ],
 };
 
-const model2 = {
-  with: 500,
+const model2: Layout = {
+  width: 500,
   height: 500,
   elements: [
     {
+      type: 'rect',
       top: 0,
       left: 0,
-      type: 'image',
-      url: 'https://st-gdx.dancf.com/odyssey/571061814/24347/20191227-015907-2da2.png',
+      width: 500,
+      height: 500,
+      style: {
+        startX: 0,
+        startY: 0,
+        endX: 500,
+        endY: 500,
+        stops: [
+          [0, 'red'],
+          [0.5, 'blue'],
+          [1, 'green']
+        ]
+      }
     },
   ],
 };
 
 async function setImageUrl() {
-  const canvas = document.createElement('canvas');
-  const url = await render(canvas as any, model);
+  const url = await modelToImage( model2);
   imgUrl.value = url;
 }
 setImageUrl();
