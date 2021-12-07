@@ -53,7 +53,7 @@ export async function getStyle(
     for (const [radio, color] of stops) {
       canvasStyle.addColorStop(radio, color);
     }
-  } else if (isUndef((style as Pattern).mode)) {
+  } else if (!isUndef((style as Pattern).mode)) {
     const { image, mode } = style as Pattern;
     const img = await loadImage(image);
     canvasStyle = context.createPattern(img, mode);
