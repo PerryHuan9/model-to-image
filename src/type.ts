@@ -9,14 +9,20 @@ interface BaseElement {
   top: number;
 }
 
+export interface ImageClip {
+  startX: number;
+  startY: number;
+  width: number;
+  height: number;
+}
+
 export interface ImageElement extends BaseElement {
   type: 'image';
   width?: number;
   height?: number;
   url: string;
   rotate?: number;
-  imageX?: number;
-  imageY?: number;
+  clip?: ImageClip;
 }
 
 type GradientStop = [number, string];

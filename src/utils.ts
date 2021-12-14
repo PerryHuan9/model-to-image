@@ -1,9 +1,9 @@
-import type { NodeCanvasRenderingContext2D } from 'canvas';
+import type { Canvas, Image, NodeCanvasRenderingContext2D } from 'canvas';
 import type { Style, RadialGradient, LinearGradient, Pattern } from './type';
 
 export function createImage(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
-    const img = new Image();
+    const img = new window.Image();
     img.onload = () => resolve(img);
     img.onerror = reject;
     img.crossOrigin = 'anonymous';
@@ -24,8 +24,10 @@ export function download(url: string, name: string) {
 
 export const isNodeEnv = typeof window === 'undefined';
 
-export async function loadImage(url: string) {
-  return isNodeEnv ? (await import('canvas')).loadImage(url) : createImage(url);
+export async function loadImage(url: string): Promise<Image> {
+  return isNodeEnv
+    ? (await import('canvas')).loadImage(url)
+    : (createImage(url) as any);
 }
 
 export async function getStyle(
@@ -63,4 +65,10 @@ export async function getStyle(
 
 export function isUndef(val: any) {
   return typeof val === 'undefined';
+}
+
+export async function createCanvas(): Promise<Canvas> {
+  return isNodeEnv
+    ? (await import('canvas')).createCanvas(0, 0)
+    : (document.createElement('canvas') as any);
 }

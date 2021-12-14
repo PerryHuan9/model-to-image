@@ -1,4 +1,4 @@
-import type { NodeCanvasRenderingContext2D, Canvas } from 'canvas';
+import { NodeCanvasRenderingContext2D, Canvas, Image } from 'canvas';
 import type {
   ImageElement,
   Layout,
@@ -6,17 +6,16 @@ import type {
   RenderOptions,
   Element,
   TextElement,
+  ImageClip,
 } from './type';
-import { loadImage, getStyle, isNodeEnv, isUndef } from './utils';
+import { loadImage, getStyle, isUndef, createCanvas } from './utils';
 
 const DEFAULT_OPTIONS: RenderOptions = {
   mimeType: 'image/png',
 };
 
 export async function render(model: Layout, op?: RenderOptions) {
-  const canvas: Canvas = isNodeEnv
-    ? (await import('canvas')).createCanvas(0, 0)
-    : (document.createElement('canvas') as any);
+  const canvas = await createCanvas();
   const options = { ...DEFAULT_OPTIONS, ...op };
   const context = canvas.getContext('2d');
   canvas.width = model.width;
@@ -64,9 +63,13 @@ async function renderImage(
   context: NodeCanvasRenderingContext2D,
   ele: ImageElement,
 ) {
-  const image = await loadImage(ele.url);
+  let image: Image | Canvas = await loadImage(ele.url);
   let imageWidth = ele.width;
   let imageHeight = ele.height;
+  if (ele.clip) {
+    image = await clipImage(image, ele.clip);
+    console.log('image:', ele.clip, image.width, image.height);
+  }
   if (!imageWidth) {
     imageWidth = ele.height
       ? (ele.height / image.height) * image.width
@@ -81,7 +84,22 @@ async function renderImage(
   if (ele.rotate) {
     context.rotate(ele.rotate);
   }
+
   context.drawImage(image, ele.left, ele.top, imageWidth, imageHeight);
+}
+
+async function clipImage(image: Image, clip: ImageClip) {
+  const canvas = await createCanvas();
+  const { startX, startY } = clip;
+  let { width, height } = clip;
+  // 裁剪时
+  width = Math.min(image.width - startX, width);
+  height = Math.min(image.height - startY, height);
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext('2d');
+  context.drawImage(image, startX, startY, width, height, 0, 0, width, height);
+  return canvas;
 }
 
 async function renderRect(
