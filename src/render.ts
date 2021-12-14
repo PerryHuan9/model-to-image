@@ -7,7 +7,7 @@ import type {
   Element,
   TextElement,
 } from './type';
-import { loadImage, getStyle, isNodeEnv } from './utils';
+import { loadImage, getStyle, isNodeEnv, isUndef } from './utils';
 
 const DEFAULT_OPTIONS: RenderOptions = {
   mimeType: 'image/png',
@@ -91,12 +91,25 @@ async function renderRect(
   if (rect.rotate) {
     context.rotate(rect.rotate);
   }
+  const isStroke = !isUndef(rect.lineWidth);
 
-  if (rect.style) {
-    context.fillStyle = await getStyle(context, rect.style);
+  if (isStroke) {
+    context.lineWidth = rect.lineWidth!;
   }
 
-  context.fillRect(rect.left, rect.top, rect.width, rect.height);
+  if (rect.style) {
+    context[isStroke ? 'strokeStyle' : 'fillStyle'] = await getStyle(
+      context,
+      rect.style,
+    );
+  }
+
+  context[isStroke ? 'strokeRect' : 'fillRect'](
+    rect.left,
+    rect.top,
+    rect.width,
+    rect.height,
+  );
 }
 
 async function renderText(

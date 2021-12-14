@@ -1,27 +1,25 @@
 <template>
-  <h2>{{props.title}}</h2>
-  <div class="img-item">
-    <div class="img-item-left">
-      <img :src="imgRef" alt="">
-      <br />
-      <button :onclick="onclick">
-        下载
-      </button>
-    </div>
-    <hr class="img-item-hr" />
-    <div class="img-item-right">
-      <img :src="serviceImgRef" />
-      <br />
-       <button :onclick="onclick2">
-        下载
-      </button>
+  <div style="margin: 20px 0;">
+    <h2 v-if="!!props.title">{{ props.title }}</h2>
+    <div class="img-item">
+      <div class="img-item-left">
+        <img :src="imgRef" alt />
+        <br />
+        <button :onclick="onclick">下载</button>
+      </div>
+      <hr class="img-item-hr" />
+      <div class="img-item-right">
+        <img :src="serviceImgRef" />
+        <br />
+        <button :onclick="onclick2">下载</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {defineProps, ref} from 'vue';
-import {modelToImage} from '../../../src'
+import { defineProps, ref } from 'vue';
+import { modelToImage } from '../../../src'
 import { download } from '../../../src/utils';
 
 const props = defineProps({
@@ -29,14 +27,14 @@ const props = defineProps({
   model: Object
 });
 
-const imgRef= ref('');
-const serviceImgRef= ref('');
+const imgRef = ref('');
+const serviceImgRef = ref('');
 
 async function toImgByFront() {
   const start = Date.now();
-  imgRef.value =  await modelToImage(props.model as any);
+  imgRef.value = await modelToImage(props.model as any);
   const end = Date.now();
-  console.log("FrontGenerateTime:", end-start, props.model);
+  console.log("FrontGenerateTime:", end - start, props.model);
 }
 
 async function toImgByService() {
@@ -50,7 +48,7 @@ async function toImgByService() {
   const end = Date.now();
   const url = await res.text();
   serviceImgRef.value = url;
-  console.log("ServiceGenerateTime:", end-start, props.model);
+  console.log("ServiceGenerateTime:", end - start, props.model);
 }
 
 toImgByFront();
@@ -80,13 +78,12 @@ function onclick2() {
   }
 
   &-right {
-    flex: 1
+    flex: 1;
   }
   img {
     max-width: 100%;
   }
   &:hover {
-
   }
 }
 </style>

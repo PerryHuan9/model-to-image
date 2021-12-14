@@ -15,6 +15,8 @@ export interface ImageElement extends BaseElement {
   height?: number;
   url: string;
   rotate?: number;
+  imageX?: number;
+  imageY?: number;
 }
 
 type GradientStop = [number, string];
@@ -49,6 +51,7 @@ export interface RectElement extends BaseElement {
   height: number;
   rotate?: number;
   style: Style;
+  lineWidth?: number;
 }
 
 export interface TextElement extends BaseElement {
