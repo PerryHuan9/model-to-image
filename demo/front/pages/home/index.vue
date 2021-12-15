@@ -1,11 +1,12 @@
 <template>
   <ImageItem title="home" :model="model" />
 </template>
-<script setup>
+<script setup lang="ts">
 import ImageItem from '../../components/ImgItem.vue'
+import { Layout } from '../../../../src';
 
 
-const model = {
+const model: Layout = {
   width: 1000,
   height: 500,
   elements: [
@@ -28,10 +29,9 @@ const model = {
       type: 'text',
       left: 100,
       top: 100,
-      width: 100,
-      stroke: true,
+      width: 500,
       text: '东风不与周郎便，铜雀春深锁二乔',
-      color: 'red',
+      style: 'red',
       font: '30px Verdana',
       lineHeight: 30,
     },

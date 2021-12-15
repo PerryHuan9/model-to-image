@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "cd ./demo/front && vite --config vite.config.ts",
-    "service": "cd ./demo/service && nodemon index.ts src/"
+    "service": "cd ./demo/service && nodemon --watch  ../../src index.ts"
   },
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,less,md,json}": [

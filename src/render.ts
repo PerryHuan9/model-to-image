@@ -1,4 +1,9 @@
-import { NodeCanvasRenderingContext2D, Canvas, Image } from 'canvas';
+import {
+  NodeCanvasRenderingContext2D,
+  Canvas,
+  Image,
+  registerFont,
+} from 'canvas';
 import type {
   ImageElement,
   Layout,
@@ -7,8 +12,16 @@ import type {
   Element,
   TextElement,
   ImageClip,
+  Font,
 } from './type';
-import { loadImage, getStyle, isUndef, createCanvas } from './utils';
+import {
+  loadImage,
+  getStyle,
+  isUndef,
+  createCanvas,
+  isNodeEnv,
+  loadFontText,
+} from './utils';
 
 const DEFAULT_OPTIONS: RenderOptions = {
   mimeType: 'image/png',
@@ -37,6 +50,18 @@ export async function render(model: Layout, op?: RenderOptions) {
     return canvas.toDataURL('image/png');
   }
   return canvas.toDataURL('image/jpeg', options.quality);
+}
+
+export async function registerFonts(fonts: Font[]) {
+  if (!isNodeEnv) return;
+  for (const font of fonts) {
+    const { family, weight, path, style } = font;
+    registerFont(path, {
+      family,
+      weight,
+      style,
+    });
+  }
 }
 
 async function renderElement(
@@ -68,7 +93,6 @@ async function renderImage(
   let imageHeight = ele.height;
   if (ele.clip) {
     image = await clipImage(image, ele.clip);
-    console.log('image:', ele.clip, image.width, image.height);
   }
   if (!imageWidth) {
     imageWidth = ele.height
@@ -134,7 +158,7 @@ async function renderText(
   context: NodeCanvasRenderingContext2D,
   ele: TextElement,
 ) {
-  renderHorizontalText(context, ele);
+  await renderHorizontalText(context, ele);
 }
 
 /**
@@ -142,11 +166,11 @@ async function renderText(
  * @param context
  * @param ele
  */
-function renderHorizontalText(
+export async function renderHorizontalText(
   context: NodeCanvasRenderingContext2D,
   ele: TextElement,
 ) {
-  const { text, left, top, lineHeight, width, font, color, rotate, height } =
+  const { text, left, top, lineHeight, width, font, style, rotate, height } =
     ele;
   const x = left;
   let y = top;
@@ -157,26 +181,33 @@ function renderHorizontalText(
   if (rotate) {
     context.rotate(rotate);
   }
-  const draw = (t: string, x1: number, y1: number) =>
-    ele.stroke ? context.strokeText(t, x1, y1) : context.fillText(t, x1, y1);
+  if (!isNodeEnv) {
+    await loadFontText(ele);
+  }
   context.font = font;
-  context[ele.stroke ? 'strokeStyle' : 'fillStyle'] = color;
+  context[ele.stroke ? 'strokeStyle' : 'fillStyle'] = await getStyle(
+    context,
+    style,
+  );
+  const draw = (t: string) =>
+    ele.stroke ? context.strokeText(t, x, y) : context.fillText(t, x, y);
   for (let n = 0; n < arrText.length; n++) {
     const testLine = line + arrText[n];
     const metrics = context.measureText(testLine);
     const testWidth = metrics.width;
+
     if (height && height < y - top) {
       break;
     }
     if (testWidth > width && n > 0) {
-      draw(line, x, y);
+      draw(line);
       line = arrText[n];
       y += lineHeight;
     } else {
       line = testLine;
     }
   }
-  if (height && height > y - top) {
-    draw(line, x, y);
+  if (!height || height > y - top) {
+    draw(line);
   }
 }

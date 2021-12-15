@@ -64,9 +64,10 @@ export interface TextElement extends BaseElement {
   type: 'text';
   width: number;
   height?: number;
-  color: string;
+  style: Style;
   text: string;
   font: string;
+  fontUrl?: string;
   rotate?: number;
   lineHeight: number;
   // 是否镂空
@@ -84,4 +85,11 @@ export interface Layout {
 export interface RenderOptions {
   mimeType: 'image/jpeg' | 'image/png';
   quality?: number;
+}
+
+export interface Font {
+  path: string;
+  family: string;
+  weight?: string;
+  style?: string;
 }

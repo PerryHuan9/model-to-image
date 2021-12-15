@@ -1,4 +1,4 @@
-import { render } from './render';
+import { render, registerFonts } from './render';
 
 export * from './type';
-export { render as modelToImage };
+export { render as modelToImage, registerFonts as nodeRegisterFonts };

@@ -72,3 +72,33 @@ export async function createCanvas(): Promise<Canvas> {
     ? (await import('canvas')).createCanvas(0, 0)
     : (document.createElement('canvas') as any);
 }
+
+export function loadFont(url: string) {
+  return new Promise<HTMLLinkElement>((resolve, reject) => {
+    const link = document.createElement('link');
+    link.href = url;
+    link.rel = 'stylesheet';
+    link.onload = () => {
+      resolve(link);
+    };
+    link.onerror = (err) => {
+      reject(err);
+    };
+    document.head.appendChild(link);
+  });
+}
+
+export async function loadFontText(ele: {
+  fontUrl?: string;
+  font: string;
+  text: string;
+}) {
+  const { fontUrl, font, text } = ele;
+  if (fontUrl) {
+    await loadFont(fontUrl);
+  }
+  const fontSet = (document as any).fonts;
+  // 等待字体就绪
+  await fontSet.ready;
+  await fontSet.load(font, text);
+}

@@ -1,7 +1,19 @@
 import Koa from 'koa';
 import KoaRouter from 'koa-router';
 import KoaBody from 'koa-body';
-import { modelToImage } from '../../src';
+import { modelToImage, nodeRegisterFonts } from '../../src';
+
+// 注册字体
+nodeRegisterFonts([
+  {
+    path: './fonts/acgn.woff',
+    family: 'FZZJ-ZBQPBJW',
+  },
+  {
+    path: './fonts/niuniu.ttf',
+    family: 'niu-niu',
+  },
+]);
 
 const app = new Koa();
 
