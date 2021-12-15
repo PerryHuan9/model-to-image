@@ -1,9 +1,4 @@
-import {
-  NodeCanvasRenderingContext2D,
-  Canvas,
-  Image,
-  registerFont,
-} from 'canvas';
+import type { NodeCanvasRenderingContext2D, Canvas, Image } from 'canvas';
 import type {
   ImageElement,
   Layout,
@@ -54,6 +49,7 @@ export async function render(model: Layout, op?: RenderOptions) {
 
 export async function registerFonts(fonts: Font[]) {
   if (!isNodeEnv) return;
+  const { registerFont } = await import('canvas');
   for (const font of fonts) {
     const { family, weight, path, style } = font;
     registerFont(path, {
@@ -170,8 +166,18 @@ export async function renderHorizontalText(
   context: NodeCanvasRenderingContext2D,
   ele: TextElement,
 ) {
-  const { text, left, top, lineHeight, width, font, style, rotate, height } =
-    ele;
+  const {
+    text,
+    left,
+    top,
+    lineHeight,
+    width,
+    font,
+    style,
+    rotate,
+    height,
+    textAlign,
+  } = ele;
   const x = left;
   let y = top;
 
@@ -189,25 +195,28 @@ export async function renderHorizontalText(
     context,
     style,
   );
+  if (textAlign) {
+    context.textAlign = textAlign;
+  }
+
   const draw = (t: string) =>
     ele.stroke ? context.strokeText(t, x, y) : context.fillText(t, x, y);
-  for (let n = 0; n < arrText.length; n++) {
-    const testLine = line + arrText[n];
-    const metrics = context.measureText(testLine);
+  for (let index = 0; index < arrText.length; index++) {
+    const current = line + arrText[index];
+    const metrics = context.measureText(current);
     const testWidth = metrics.width;
-
     if (height && height < y - top) {
       break;
     }
-    if (testWidth > width && n > 0) {
+    if ((testWidth > width && index > 0) || arrText[index] === '\n') {
       draw(line);
-      line = arrText[n];
+      line = arrText[index] === '\n' ? '' : arrText[index];
       y += lineHeight;
     } else {
-      line = testLine;
+      line = current;
     }
   }
-  if (!height || height > y - top) {
+  if (line && (!height || height > y - top)) {
     draw(line);
   }
 }

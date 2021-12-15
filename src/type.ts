@@ -1,4 +1,4 @@
-import { Canvas } from 'canvas';
+import type { Canvas } from 'canvas';
 
 export type RenderCancas = HTMLCanvasElement | Canvas;
 
@@ -72,6 +72,7 @@ export interface TextElement extends BaseElement {
   lineHeight: number;
   // 是否镂空
   stroke?: boolean;
+  textAlign?: 'start' | 'end' | 'center' | 'left' | 'right';
 }
 
 export type Element = ImageElement | RectElement | TextElement;

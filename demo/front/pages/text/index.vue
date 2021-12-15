@@ -1,5 +1,6 @@
 <template>
   <ImageItem title="多行文字" :model="multiLineModel"/>
+  <ImageItem title="换行符 & 居中" :model="newLineModel"/>
   <ImageItem title="使用字体" :model="textModel"/>
 </template>
 <script setup lang="ts">
@@ -41,6 +42,32 @@ const multiLineModel:Layout = {
   ]
 };
 
+const newLineModel:Layout = {
+  width: 500,
+  height: 400,
+  elements: [
+     {
+      type: 'rect',
+      left: 0,
+      top: 0,
+      width: 500,
+      height: 400,
+      style: 'black'
+    },
+     {
+      type: 'text',
+      text: `登高\n杜甫\n风急天高猿啸哀，渚清沙白鸟飞回。\n无边落木萧萧下，不尽长江滚滚来。\n万里悲秋常作客，百年多病独登台。\n艰难苦恨繁霜鬓，潦倒新停浊酒杯。\n`,
+      left: 250,
+      top: 100,
+      width: 500,
+      textAlign: 'center',
+      style: 'white',
+      font: '25px Arial',
+      lineHeight: 30,
+    }
+  ]
+}
+
 const textModel:Layout = {
   width: 500,
   height: 300,
@@ -55,7 +82,7 @@ const textModel:Layout = {
     },
     {
       type: 'text',
-      text: '可叹停机德，堪怜咏絮才',
+      text: `可叹停机德，堪怜咏絮才`,
       left: 50,
       top: 100,
       width: 400,
