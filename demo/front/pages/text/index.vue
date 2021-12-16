@@ -2,6 +2,7 @@
   <ImageItem title="多行文字" :model="multiLineModel"/>
   <ImageItem title="换行符 & 居中" :model="newLineModel"/>
   <ImageItem title="使用字体" :model="textModel"/>
+  <ImageItem title="font Model" :model="fontModel"/>
 </template>
 <script setup lang="ts">
 import { Layout } from '../../../../src';
@@ -91,6 +92,31 @@ const textModel:Layout = {
       font: '30px FZZJ-ZBQPBJW',
       lineHeight: 30,
       fontUrl: 'https://fonts.bytedance.com/dfd/api/v1/css?family=FZZJ-ZBQPBJW:500&display=swap',
+    }
+  ]
+}
+
+const fontModel:Layout = {
+  width: 500,
+  height: 300,
+  elements: [
+    {
+      type: 'rect',
+      left: 0,
+      top: 0,
+      width: 500,
+      height: 300,
+      style: 'black'
+    },
+    {
+      type: 'text',
+      text: `可叹停机德，堪怜咏絮才`,
+      left: 50,
+      top: 100,
+      width: 400,
+      style: 'white',
+      font: 'italic bold 30px niu-niu',
+      lineHeight: 30,
     }
   ]
 }
