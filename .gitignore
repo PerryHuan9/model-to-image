@@ -11,3 +11,4 @@ dist
 es
 lib
 test/coverage
+/dist/

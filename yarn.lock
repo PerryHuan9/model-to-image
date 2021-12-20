@@ -596,6 +596,13 @@
     magic-string "^0.25.7"
     resolve "^1.17.0"
 
+"@rollup/plugin-json@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@rollup/plugin-json/download/@rollup/plugin-json-4.1.0.tgz#54e09867ae6963c593844d8bd7a9c718294496f3"
+  integrity sha1-VOCYZ65pY8WThE2L16nHGClElvM=
+  dependencies:
+    "@rollup/pluginutils" "^3.0.8"
+
 "@rollup/plugin-node-resolve@^13.0.4":
   version "13.0.6"
   resolved "https://registry.npmmirror.com/@rollup/plugin-node-resolve/download/@rollup/plugin-node-resolve-13.0.6.tgz?cache=0&sync_timestamp=1634651309904&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40rollup%2Fplugin-node-resolve%2Fdownload%2F%40rollup%2Fplugin-node-resolve-13.0.6.tgz#29629070bb767567be8157f575cfa8f2b8e9ef77"
@@ -616,7 +623,7 @@
     "@rollup/pluginutils" "^3.1.0"
     resolve "^1.17.0"
 
-"@rollup/pluginutils@^3.1.0":
+"@rollup/pluginutils@^3.0.8", "@rollup/pluginutils@^3.1.0":
   version "3.1.0"
   resolved "https://registry.nlark.com/@rollup/pluginutils/download/@rollup/pluginutils-3.1.0.tgz?cache=0&sync_timestamp=1626393703548&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40rollup%2Fpluginutils%2Fdownload%2F%40rollup%2Fpluginutils-3.1.0.tgz#706b4524ee6dc8b103b3c995533e5ad680c02b9b"
   integrity sha1-cGtFJO5tyLEDs8mVUz5a1oDAK5s=
@@ -4723,6 +4730,14 @@ rollup-plugin-filesize@^9.1.1:
     gzip-size "^6.0.0"
     pacote "^11.2.7"
     terser "^5.6.0"
+
+rollup-plugin-natives@^0.7.5:
+  version "0.7.5"
+  resolved "https://registry.npmmirror.com/rollup-plugin-natives/download/rollup-plugin-natives-0.7.5.tgz#98731534ca1d3616b72c418bd655620c41bc597c"
+  integrity sha1-mHMVNModNha3LEGL1lViDEG8WXw=
+  dependencies:
+    fs-extra "^10.0.0"
+    magic-string "^0.25.7"
 
 rollup-plugin-terser@^7.0.2:
   version "7.0.2"

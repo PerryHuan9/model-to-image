@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "cd ./demo/front && vite --config vite.config.ts",
-    "service": "cd ./demo/service && nodemon --watch  ../../src index.ts"
+    "service": "cd ./demo/service && nodemon --watch  ../../src index.ts",
+    "build": "rollup --config"
   },
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
@@ -19,6 +20,7 @@
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-typescript": "^8.2.5",
     "@types/koa": "^2.13.4",
@@ -46,6 +48,7 @@
     "prettier": "^2.4.0",
     "rollup": "^2.56.3",
     "rollup-plugin-filesize": "^9.1.1",
+    "rollup-plugin-natives": "^0.7.5",
     "rollup-plugin-terser": "^7.0.2",
     "typescript": "^4.4.3",
     "vite": "^2.6.14",
