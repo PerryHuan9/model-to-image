@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import KoaRouter from 'koa-router';
 import KoaBody from 'koa-body';
-import { modelToImage, nodeRegisterFonts } from '../../src';
+import { modelToImage, nodeRegisterFonts } from '../../dist';
 
 // 注册字体
 nodeRegisterFonts([

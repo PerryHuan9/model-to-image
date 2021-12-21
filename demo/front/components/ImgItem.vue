@@ -3,7 +3,7 @@
     <h2 v-if="!!props.title">{{ props.title }}</h2>
     <div class="img-item">
       <div class="img-item-left">
-        <img :src="imgRef" alt />
+        <img :src="imgRef"  />
         <br />
         <button :onclick="onclick">下载</button>
       </div>
@@ -19,8 +19,7 @@
 
 <script lang="ts" setup>
 import { defineProps, ref } from 'vue';
-import { modelToImage } from '../../../src'
-import { download } from '../../../src/utils';
+import { modelToImage , download } from 'model-to-image'
 
 const props = defineProps({
   title: String,

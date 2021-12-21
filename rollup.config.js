@@ -9,11 +9,14 @@ import nativePlugin from 'rollup-plugin-natives';
 export default {
   input: './src/index.ts',
   output: {
-    format: 'es',
+    format: 'cjs',
     dir: 'dist',
   },
+  external: ['canvas'],
   plugins: [
-    typescript({ declaration: false, module: 'esnext' }),
+    typescript({
+      tsconfig: './tsconfig.json',
+    }),
     resolve(),
     commonjs(),
     terser(),
@@ -28,7 +31,7 @@ export default {
 
       // Use `dlopen` instead of `require`/`import`.
       // This must be set to true if using a different file extension that '.node'
-      dlopen: false,
+      dlopen: true,
       // Modify the final filename for specific modules
       // A function that receives a full path to the original file, and returns a desired filename
       // map: (modulePath) => 'filename.node',
