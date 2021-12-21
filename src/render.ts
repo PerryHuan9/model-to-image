@@ -1,4 +1,10 @@
 import type { NodeCanvasRenderingContext2D, Canvas, Image } from 'canvas';
+import {
+  globalImageFactory,
+  ImageFactoty,
+  imageFactory,
+  setImageFactory,
+} from './image-factory';
 import type {
   ImageElement,
   Layout,
@@ -8,21 +14,24 @@ import type {
   TextElement,
   ImageClip,
   Font,
+  Pattern,
 } from './type';
 import {
-  loadImage,
-  getStyle,
   isUndef,
   createCanvas,
   isNodeEnv,
   loadFontText,
+  loadImage,
 } from './utils';
+import { getStyle } from './helper';
 
 const DEFAULT_OPTIONS: RenderOptions = {
   mimeType: 'image/png',
 };
 
 export async function render(model: Layout, op?: RenderOptions) {
+  setImageFactory(op?.useCache ? globalImageFactory : new ImageFactoty());
+  loadAllImage(model);
   const canvas = await createCanvas();
   const options = { ...DEFAULT_OPTIONS, ...op };
   const context = canvas.getContext('2d');
@@ -45,6 +54,19 @@ export async function render(model: Layout, op?: RenderOptions) {
     return canvas.toDataURL('image/png');
   }
   return canvas.toDataURL('image/jpeg', options.quality);
+}
+
+function loadAllImage(model: Layout) {
+  const urls = [];
+  for (const ele of model.elements) {
+    if (ele.type === 'image') {
+      urls.push(ele.url);
+    }
+    if ((ele as any)?.style?.image) {
+      urls.push(((ele as any).style as Pattern).image);
+    }
+  }
+  imageFactory.loadImages(urls);
 }
 
 export async function registerFonts(fonts: Font[]) {

@@ -86,6 +86,7 @@ export interface Layout {
 export interface RenderOptions {
   mimeType: 'image/jpeg' | 'image/png';
   quality?: number;
+  useCache?: boolean;
 }
 
 export interface Font {
