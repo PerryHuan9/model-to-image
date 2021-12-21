@@ -2,6 +2,10 @@
   "name": "model-to-image",
   "version": "0.0.1",
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "scripts": {
     "dev": "cd ./demo/front && vite --config vite.config.ts",
