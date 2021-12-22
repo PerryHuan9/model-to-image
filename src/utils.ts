@@ -11,16 +11,6 @@ export function createImage(url: string): Promise<HTMLImageElement> {
   });
 }
 
-export function download(url: string, name: string) {
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = name;
-  a.style.display = 'none';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
-
 export const isNodeEnv = typeof window === 'undefined';
 
 export async function loadImage(url: string): Promise<Image> {

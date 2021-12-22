@@ -5,21 +5,26 @@
       <div class="img-item-left">
         <img :src="imgRef"  />
         <br />
-        <button :onclick="onclick">下载</button>
       </div>
       <hr class="img-item-hr" />
       <div class="img-item-right">
         <img :src="serviceImgRef" />
         <br />
-        <button :onclick="onclick2">下载</button>
       </div>
+    </div>
+    <div class="expand-btn" @click="onExpand">{{isExpand ? '收起': '展开'}}</div>
+    <div class="code-container"  :style="{height: isExpand ? 'auto' : '0'}">
+      <pre><code class="json" spellcheck="false" ref="codeRef">{{props.model}}</code></pre>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps, ref } from 'vue';
-import { modelToImage , download } from 'model-to-image'
+import { defineProps, h, ref, onMounted } from 'vue';
+import { modelToImage } from 'model-to-image'
+import hljs from 'highlight.js';
+import 'highlight.js/styles/monokai.css';
+
 
 const props = defineProps({
   title: String,
@@ -28,6 +33,16 @@ const props = defineProps({
 
 const imgRef = ref('');
 const serviceImgRef = ref('');
+const codeRef = ref<HTMLElement>();
+const isExpand =ref(false);
+
+onMounted(() => {
+ hljs.highlightBlock(codeRef.value)
+})
+
+function onExpand() {
+  isExpand.value = !isExpand.value;
+}
 
 async function toImgByFront() {
   const start = Date.now();
@@ -53,16 +68,21 @@ async function toImgByService() {
 toImgByFront();
 toImgByService();
 
-function onclick() {
-  download(imgRef.value, `front-${Date.now()}.png`)
-}
-
-function onclick2() {
-  download(serviceImgRef.value, `service-${Date.now()}.png`)
-}
-
 </script>
 <style lang="less">
+.code-container {
+  overflow: hidden;
+}
+.expand-btn {
+    height: 30px;
+    background-color: #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    user-select: none;
+  }
 .img-item {
   display: flex;
   &-left {
