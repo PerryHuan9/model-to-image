@@ -1,4 +1,5 @@
-import { Image, loadImage } from 'canvas';
+import { Image } from 'canvas';
+import { loadImage } from './utils';
 
 export class ImageFactoty {
   imageMap: Map<string, Promise<Image>>;

@@ -16,24 +16,19 @@ import type {
   Font,
   Pattern,
 } from './type';
-import {
-  isUndef,
-  createCanvas,
-  isNodeEnv,
-  loadFontText,
-  loadImage,
-} from './utils';
+import { isUndef, createCanvas, isNodeEnv, loadFontText } from './utils';
 import { getStyle } from './helper';
 
 const DEFAULT_OPTIONS: RenderOptions = {
   mimeType: 'image/png',
+  useCache: true,
 };
 
 export async function render(model: Layout, op?: RenderOptions) {
-  setImageFactory(op?.useCache ? globalImageFactory : new ImageFactoty());
+  const options = { ...DEFAULT_OPTIONS, ...op };
+  setImageFactory(options.useCache ? globalImageFactory : new ImageFactoty());
   loadAllImage(model);
   const canvas = await createCanvas();
-  const options = { ...DEFAULT_OPTIONS, ...op };
   const context = canvas.getContext('2d');
   canvas.width = model.width;
   canvas.height = model.height;
@@ -106,7 +101,7 @@ async function renderImage(
   context: NodeCanvasRenderingContext2D,
   ele: ImageElement,
 ) {
-  let image: Image | Canvas = await loadImage(ele.url);
+  let image: Image | Canvas = await imageFactory.loadImage(ele.url);
   let imageWidth = ele.width;
   let imageHeight = ele.height;
   if (ele.clip) {

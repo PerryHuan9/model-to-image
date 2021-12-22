@@ -56,7 +56,14 @@ const model:Layout = {
       style: 'white',
       font: '20px Arial',
       lineHeight: 30,
-    }
+    },
+     {
+      type: 'image',
+      left: 0,
+      top: 0,
+      width: 200,
+      url: 'https://st0.dancf.com/gaoding-material/0/images/353985/20200108-213027-qjucQ.jpg'
+    },
   ]
 }
 </script>

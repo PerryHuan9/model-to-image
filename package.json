@@ -1,6 +1,6 @@
 {
   "name": "model-to-image",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "cd ./demo/front && vite --config vite.config.ts",
-    "service": "cd ./demo/service && nodemon index.ts",
+    "service": "cd ./demo/service && nodemon --watch ../../src index.ts",
     "build": "rollup --config"
   },
   "lint-staged": {
