@@ -7,6 +7,19 @@
   ],
   "types": "dist/index.d.ts",
   "license": "MIT",
+  "author": {
+    "name": "Perry",
+    "email": "1101127028@qq.com"
+  },
+  "keywords": [
+    "model",
+    "model-to-iamge",
+    "generater",
+    "Scenery",
+    "image generater",
+    "canvas",
+    "image"
+  ],
   "scripts": {
     "dev": "cd ./demo/front && vite --config vite.config.ts",
     "service": "cd ./demo/service && nodemon --watch ../../src index.ts",
