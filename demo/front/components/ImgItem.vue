@@ -4,12 +4,12 @@
     <div class="img-item">
       <div class="img-item-left">
         <img :src="imgRef"  />
-        <br />
+        <button class="download-btn" @click="onClick">下载</button>
       </div>
       <hr class="img-item-hr" />
       <div class="img-item-right">
         <img :src="serviceImgRef" />
-        <br />
+        <button class="download-btn" @click="onClick2">下载</button>
       </div>
     </div>
     <div class="expand-btn" @click="onExpand">{{isExpand ? '收起': '展开'}}</div>
@@ -24,6 +24,7 @@ import { defineProps, h, ref, onMounted } from 'vue';
 import { modelToImage } from 'model-to-image'
 import hljs from 'highlight.js';
 import 'highlight.js/styles/monokai.css';
+import { download } from '../utils';
 
 
 const props = defineProps({
@@ -68,6 +69,14 @@ async function toImgByService() {
 toImgByFront();
 toImgByService();
 
+function onClick() {
+  download(imgRef.value, 'result.png')
+}
+
+function onClick2() {
+    download(imgRef.value, 'result2.png')
+}
+
 </script>
 <style lang="less">
 .code-container {
@@ -85,8 +94,15 @@ toImgByService();
   }
 .img-item {
   display: flex;
+
+  .download-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
   &-left {
     flex: 1;
+    position: relative;
   }
 
   &-hr {
@@ -98,6 +114,7 @@ toImgByService();
 
   &-right {
     flex: 1;
+     position: relative;
   }
   img {
     max-width: 100%;
